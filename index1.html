@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamVault - 100% Fixed Working Template</title>
+    <style>
+        /* 🎨 GLOBAL STYLES */
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --accent-color: #ff3333;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --card-border: #2d2d2d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); overflow-x: hidden; }
+
+        /* 🌐 TOP NAVIGATION BAR */
+        header { background-color: var(--bg-secondary); padding: 12px 24px; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--accent-color); }
+        .nav-wrapper { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+        .brand-logo { font-size: 24px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .brand-logo span { color: var(--accent-color); }
+        
+        .search-bar-container { flex: 1; max-width: 500px; }
+        .search-bar-container input { width: 100%; padding: 10px 16px; background-color: var(--bg-primary); border: 1px solid var(--card-border); border-radius: 20px; color: var(--text-main); font-size: 14px; outline: none; }
+
+        .nav-actions { display: flex; gap: 12px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 14px; transition: background 0.2s; white-space: nowrap; }
+        .btn-accent { background-color: var(--accent-color); color: white; }
+        .btn-outline { background-color: transparent; color: var(--text-main); border: 1px solid var(--card-border); }
+        .btn-outline:hover { background-color: var(--bg-primary); }
+
+        /* 🗂️ CATEGORY FILTERS */
+        .filter-bar { max-width: 1400px; margin: 20px auto 0; padding: 0 24px; display: flex; gap: 10px; overflow-x: auto; white-space: nowrap; }
+        .filter-chip { padding: 6px 14px; background-color: var(--bg-secondary); border: 1px solid var(--card-border); border-radius: 16px; font-size: 13px; color: var(--text-main); cursor: pointer; }
+        .filter-chip.active { background-color: var(--text-main); color: var(--bg-primary); font-weight: bold; }
+
+        /* 📺 MAIN GRID LAYOUT */
+        .content-container { max-width: 1400px; margin: 30px auto; padding: 0 24px; }
+        .grid-heading { font-size: 20px; font-weight: bold; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .grid-heading::before { content: ''; display: inline-block; width: 4px; height: 18px; background: var(--accent-color); }
+        
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .video-card { background-color: var(--bg-secondary); border-radius: 6px; overflow: hidden; border: 1px solid var(--card-border); cursor: pointer; }
+        
+        .thumbnail-box { width: 100%; aspect-ratio: 16/9; background-color: #262626; position: relative; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px; }
+        .video-duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); padding: 2px 6px; font-size: 11px; border-radius: 2px; font-weight: bold; }
+        
+        .video-meta { padding: 12px; }
+        .video-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
+
+        /* 🔒 ADMIN DRAWER */
+        .admin-drawer { display: none; background-color: var(--bg-secondary); border: 1px solid var(--card-border); border-radius: 8px; padding: 20px; max-width: 600px; margin: 0 auto 30px; }
+        .drawer-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--accent-color); text-transform: uppercase; }
+        
+        /* 🔑 AUTH OVERLAY */
+        .auth-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .auth-card { background: var(--bg-secondary); width: 100%; max-width: 400px; border-radius: 8px; border: 1px solid var(--card-border); padding: 30px; }
+        .auth-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; color: var(--text-main); }
+
+        /* FORM FIELD STYLES */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-muted); }
+        .form-group input { width: 100%; padding: 10px; background-color: var(--bg-primary); border: 1px solid var(--card-border); border-radius: 4px; color: white; font-size: 14px; outline: none; }
+
+        /* 🎬 VIDEO MODAL OVERLAY */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-view { background: var(--bg-secondary); width: 100%; max-width: 850px; border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border); }
+        .player-container { width: 100%; aspect-ratio: 16/9; background: #000; }
+        .player-container video { width: 100%; height: 100%; }
+        .modal-info { padding: 20px; position: relative; }
+        .modal-close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+
+        footer { border-top: 1px solid var(--card-border); padding: 30px; text-align: center; color: var(--text-muted); margin-top: 50px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <!-- 🌐 NAVIGATION HEADER -->
+    <header>
+        <div class="nav-wrapper">
+            <div class="brand-logo" onclick="window.location.reload()">Stream<span>Vault</span></div>
+            <div class="search-bar-container">
+                <input type="text" placeholder="Search videos...">
+            </div>
+            <div class="nav-actions">
+                <!-- INLINE CLICK EVENT DIRECTLY ATTACHED -->
+                <button class="btn btn-outline" id="toggleAdminBtn" onclick="handleAdminTrigger()">Creator Dashboard</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 🗂️ FILTERS BAR -->
+    <div class="filter-bar">
+        <div class="filter-chip active">All Content</div>
+        <div class="filter-chip">Recent Uploads</div>
+        <div class="filter-chip">Trending</div>
+        <div class="filter-chip">HD Quality</div>
+        <div class="filter-chip">Short Clips</div>
+    </div>
+
+    <!-- 📺 CORE INTERFACE -->
+    <div class="content-container">
+        
+        <!-- 🔒 SECURE CREATOR INPUT PANEL -->
+        <div class="admin-drawer" id="adminPanel">
+            <div class="drawer-title">Upload / Append Video Entry</div>
+            <form id="contentForm" onsubmit="captureLocalSubmission(event)">
+                <div class="form-group">
+                    <label>Content Title</label>
+                    <input type="text" id="titleInput" placeholder="Enter video title..." required>
+                </div>
+                <div class="form-group">
+                    <label>Source Link (MP4 File Video URL)</label>
+                    <input type="url" id="urlInput" placeholder="https://example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Display Duration</label>
+                    <input type="text" id="durationInput" placeholder="e.g., 10:25" required>
+                </div>
+                <button type="submit" class="btn btn-accent" style="width: 100%; padding: 12px;">Insert Video Layout</button>
+            </form>
+        </div>
+
+        <!-- VIDEO FEED CONTAINER -->
+        <div class="grid-heading">Recommended Streams</div>
+        <div class="video-grid" id="mainVideoGrid">
+            
+            <div class="video-card" onclick="triggerPlayer('Sample Video Concept A', 'https://w3schools.com')">
+                <div class="thumbnail-box">
+                    <span>🎬 Click to Play Demo Video</span>
+                    <span class="video-duration">00:10</span>
+                </div>
+                <div class="video-meta">
+                    <div class="video-title">Sample Testing Playback Stream Component - 1080p</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🔐 LOGIN MODAL POPUP -->
+    <div class="auth-overlay" id="authModal">
+        <div class="auth-card">
+            <div class="auth-title">Admin Access Verification</div>
+            <form onsubmit="verifyAdminCredentials(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="authUsername" placeholder="Enter admin..." required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter mysecret2026..." required>
+                </div>
+                <button type="submit" class="btn btn-accent" style="width: 100%; padding: 10px; margin-bottom: 8px;">Verify Identity</button>
+                <button type="button" class="btn btn-outline" style="width: 100%; padding: 10px;" onclick="closeAuthModal()">Close</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 🎬 PLAYER OVERLAY -->
+    <div class="modal-overlay" id="playerModal" onclick="closePlayer()">
+        <div class="modal-view" onclick="event.stopPropagation()">
+            <div class="player-container">
